@@ -1,0 +1,21 @@
+CREATE DATABASE IF NOT EXISTS social_network CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE social_network;
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  fullname VARCHAR(150) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  age INT,
+  avatar VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE posts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  image VARCHAR(255),
+  description TEXT,
+  likes INT DEFAULT 0,
+  dislikes INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
