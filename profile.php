@@ -27,7 +27,7 @@ $posts = $post->getByUser($u['id']);
 <div class="info">
 <div class="row"><label>Email:</label><span><?php echo htmlspecialchars($u['email']); ?></span></div>
 <div class="row editable" data-field="fullname"><label>Name:</label><span id="fullname"><?php echo htmlspecialchars($u['fullname']); ?></span><button class="edit-btn" data-field="fullname">✎</button></div>
-<div class="row editable" data-field="age"><label>Age:</label><span id="age"><?php echo intval($u['age']); ?></span><button class="edit-btn" data-field="age">✎</button></div>
+<div class="row editable" data-field="dob"><label>DOB:</label><span id="dob"><?php echo htmlspecialchars($u['dob']); ?></span><button class="edit-btn" data-field="dob">✎</button></div>
 <form id="avatarForm" enctype="multipart/form-data">
 <input type="file" name="avatar" id="avatarInput" accept="image/*">
 <button type="submit">Upload Avatar</button>
@@ -38,8 +38,10 @@ $posts = $post->getByUser($u['id']);
 <h3>Create Post</h3>
 <form id="postForm" enctype="multipart/form-data">
 <textarea name="description" placeholder="Say something..." required></textarea>
+<div class="post-controls">
 <input type="file" name="post_image" accept="image/*">
 <button type="submit">Post</button>
+</div>
 </form>
 <div id="posts">
 <?php foreach($posts as $p): ?>
@@ -55,8 +57,8 @@ $posts = $post->getByUser($u['id']);
 <p><?php echo nl2br(htmlspecialchars($p['description'])); ?></p>
 </div>
 <div class="post-actions">
-<button class="like-btn" data-id="<?php echo $p['id']; ?>">Like (<span class="likes"><?php echo $p['likes']; ?></span>)</button>
-<button class="dislike-btn" data-id="<?php echo $p['id']; ?>">Dislike (<span class="dislikes"><?php echo $p['dislikes']; ?></span>)</button>
+<button class="like-btn <?php echo $p['user_reaction'] === 'like' ? 'active' : ''; ?>" data-id="<?php echo $p['id']; ?>">Like (<span class="likes"><?php echo $p['likes']; ?></span>)</button>
+<button class="dislike-btn <?php echo $p['user_reaction'] === 'dislike' ? 'active' : ''; ?>" data-id="<?php echo $p['id']; ?>">Dislike (<span class="dislikes"><?php echo $p['dislikes']; ?></span>)</button>
 </div>
 </div>
 <?php endforeach; ?>

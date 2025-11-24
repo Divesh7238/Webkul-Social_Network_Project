@@ -35,8 +35,8 @@ if($action==='react'){
     $pid = intval($_POST['post_id']);
     $type = $_POST['type'];
     if($type==='like' || $type==='dislike'){
-        $post->updateLikes($pid,$type);
-        echo json_encode(['status'=>'ok']);
+        $res = $post->processReaction($_SESSION['user_id'],$pid,$type);
+        echo json_encode($res);
         exit;
     }
 }

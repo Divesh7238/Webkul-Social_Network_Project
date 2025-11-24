@@ -9,9 +9,12 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     $fullname = trim($_POST['fullname']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
-    $age = intval($_POST['age']);
+    $confirm_password = $_POST['confirm_password'];
+    $dob = trim($_POST['dob']);
     if(!filter_var($email,FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email';
     if(strlen($password) < 6) $errors[] = 'Password too short';
+    if($password !== $confirm_password) $errors[] = 'Passwords do not match';
+    if(empty($dob)) $errors[] = 'Date of Birth is required';
     if($user->getByEmail($email)) $errors[] = 'Email already exists';
     if(!empty($_FILES['avatar']['name'])){
         $f = $_FILES['avatar'];
@@ -29,7 +32,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
             $avatarName = uniqid('av_').'.'.$ext;
             move_uploaded_file($_FILES['avatar']['tmp_name'], UPLOAD_DIR.$avatarName);
         }
-        $user->register($fullname,$email,$password,$age,$avatarName);
+        $user->register($fullname,$email,$password,$dob,$avatarName);
         header('Location: login.php');
         exit;
     }
@@ -53,7 +56,8 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 <input type="text" name="fullname" placeholder="Full Name" required>
 <input type="email" name="email" placeholder="Email" required>
 <input type="password" name="password" placeholder="Password" required>
-<input type="number" name="age" placeholder="Age" required>
+<input type="password" name="confirm_password" placeholder="Confirm Password" required>
+<input type="date" name="dob" placeholder="Date of Birth" required>
 <input type="file" name="avatar" accept="image/*">
 <button type="submit">Register</button>
 </form>
